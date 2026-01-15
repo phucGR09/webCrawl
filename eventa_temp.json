@@ -1,0 +1,33 @@
+{
+  "abc123def4567890": {
+    "url": "https://example.com/article/sample",
+    "date": "2026-01-15",
+    "title": "Sample Article Title",
+    "images": [
+      {
+        "id_image": "1a2b3c4d5e6f7890",
+        "caption": "Image caption or alt text",
+        "author": "Photographer name or credit"
+      },
+      {
+        "id_image": "fedcba9876543210",
+        "caption": "",
+        "author": ""
+      }
+    ],
+    "content": "Full article content text here..."
+  },
+  "def456abc7891234": {
+    "url": "https://example.com/article/sample-2",
+    "date": "2026-01-14",
+    "title": "Another Article Title",
+    "images": [
+      {
+        "id_image": "9876543210fedcba",
+        "caption": "Another image",
+        "author": "John Doe"
+      }
+    ],
+    "content": "Another article content..."
+  }
+}

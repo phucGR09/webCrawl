@@ -1,0 +1,15 @@
+# Core web scraping dependencies
+requests==2.31.0
+beautifulsoup4==4.12.3
+lxml==5.1.0
+
+# Selenium for dynamic content (optional)
+selenium==4.16.0
+webdriver-manager==4.0.1
+
+# Utilities
+python-dotenv==1.0.0
+Pillow==10.2.0
+
+# Data processing
+python-dateutil==2.8.2

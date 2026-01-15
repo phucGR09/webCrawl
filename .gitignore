@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment variables
+.env
+
+# Crawled data (uncomment if you don't want to commit crawled data)
+# src/crawl/*/data.json
+# src/crawl/*/image/*.jpg
+# database/database.json
+# database/images/
+
+# Logs
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Selenium
+geckodriver.log
+chromedriver.log
+
+# Test files
+test_*.py
+*_test.py
