@@ -30,10 +30,11 @@ ENV/
 .env
 
 # Crawled data (uncomment if you don't want to commit crawled data)
-# src/crawl/*/data.json
-# src/crawl/*/image/*.jpg
-# database/database.json
-# database/images/
+src/crawl/*/data.json
+src/crawl/*/image/*
+src/crawl/*/debug_html/*
+database/database.json
+database/images/
 
 # Logs
 *.log
