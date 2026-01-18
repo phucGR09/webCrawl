@@ -16,13 +16,6 @@ from utils import hash_id, save_image, format_datetime, normalize_url
 
 class BaoVanHoaCrawler:
     def __init__(self, base_url="https://baovanhoa.vn/van-hoa", max_pages=5):
-        """
-        Initialize crawler for baovanhoa.vn
-        
-        Args:
-            base_url: Base URL for the culture section
-            max_pages: Maximum number of pages to crawl
-        """
         self.base_url = base_url
         self.max_pages = max_pages
         self.base_domain = "https://baovanhoa.vn"
@@ -37,15 +30,6 @@ class BaoVanHoaCrawler:
         }
     
     def get_article_links_from_page(self, page_num: int) -> list:
-        """
-        Get all article links from a specific page
-        
-        Args:
-            page_num: Page number to crawl
-        
-        Returns:
-            List of article URLs
-        """
         try:
             # Construct page URL
             if page_num == 1:
@@ -89,15 +73,6 @@ class BaoVanHoaCrawler:
             return []
     
     def crawl_article_detail(self, article_url: str) -> dict:
-        """
-        Crawl detailed content from a single article
-        
-        Args:
-            article_url: URL of the article to crawl
-        
-        Returns:
-            Dictionary containing article data or None if failed
-        """
         try:
             # Get article HTML
             response = requests.get(article_url, headers=self.headers, timeout=10)
@@ -199,9 +174,6 @@ class BaoVanHoaCrawler:
             return None
     
     def crawl_all_pages(self):
-        """
-        Crawl all pages and articles
-        """
         print(f"\n{'='*60}")
         print(f"Starting crawler for baovanhoa.vn")
         print(f"Max pages: {self.max_pages}")
@@ -231,12 +203,7 @@ class BaoVanHoaCrawler:
         print(f"{'='*60}\n")
     
     def save_to_json(self, filename='data.json'):
-        """
-        Save crawled data to JSON file
-        
-        Args:
-            filename: Output filename
-        """
+
         output_path = Path(__file__).parent / filename
         
         try:
@@ -250,9 +217,6 @@ class BaoVanHoaCrawler:
 
 
 def main():
-    """
-    Main function to run the crawler
-    """
     # Create crawler instance (crawl 3 pages by default, change max_pages as needed)
     crawler = BaoVanHoaCrawler(
         base_url="https://baovanhoa.vn/van-hoa",
