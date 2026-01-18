@@ -186,7 +186,7 @@ class BaoVanHoaCrawler:
             links = self.get_article_links_from_page(page_num)
             all_article_links.extend(links)
             time.sleep(1)  # Be polite to the server
-        
+        print(f"Total article links found: {len(all_article_links)}\n")
         # Step 2: Crawl each article detail
         for article_url in all_article_links:
             article_data = self.crawl_article_detail(article_url)
@@ -220,7 +220,7 @@ def main():
     # Create crawler instance (crawl 3 pages by default, change max_pages as needed)
     crawler = BaoVanHoaCrawler(
         base_url="https://baovanhoa.vn/van-hoa",
-        max_pages=499  # Adjust this number to crawl more/less pages
+        max_pages=2  # Adjust this number to crawl more/less pages
     )
     
     # Crawl all pages
