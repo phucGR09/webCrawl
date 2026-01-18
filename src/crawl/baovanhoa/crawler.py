@@ -11,12 +11,14 @@ import bs4
 from bs4 import BeautifulSoup
 import json
 import time
+import argparse
 from utils import hash_id, save_image, format_datetime, normalize_url
 
 
 class BaoVanHoaCrawler:
-    def __init__(self, base_url="https://baovanhoa.vn/van-hoa", max_pages=5):
+    def __init__(self, base_url="https://baovanhoa.vn/van-hoa", page_start=1, max_pages=5):
         self.base_url = base_url
+        self.page_start = page_start
         self.max_pages = max_pages
         self.base_domain = "https://baovanhoa.vn"
         self.articles_data = {}
@@ -176,13 +178,15 @@ class BaoVanHoaCrawler:
     def crawl_all_pages(self):
         print(f"\n{'='*60}")
         print(f"Starting crawler for baovanhoa.vn")
-        print(f"Max pages: {self.max_pages}")
+        print(f"Page range: {self.page_start} to {self.page_start + self.max_pages - 1}")
+        print(f"Total pages to crawl: {self.max_pages}")
         print(f"{'='*60}\n")
         
         all_article_links = []
         
         # Step 1: Collect all article links from all pages
-        for page_num in range(1, self.max_pages + 1):
+        page_end = self.page_start + self.max_pages
+        for page_num in range(self.page_start, page_end):
             links = self.get_article_links_from_page(page_num)
             all_article_links.extend(links)
             time.sleep(1)  # Be polite to the server
@@ -217,17 +221,70 @@ class BaoVanHoaCrawler:
 
 
 def main():
-    # Create crawler instance (crawl 3 pages by default, change max_pages as needed)
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(
+        description='Crawl articles from baovanhoa.vn',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Crawl pages 1-5, save to data_phase1.json
+  python crawler.py --page-begin 1 --amount 5 --output data_phase1.json
+  
+  # Crawl pages 6-10, save to data_phase2.json (second phase)
+  python crawler.py --page-begin 6 --amount 5 --output data_phase2.json
+  
+  # Crawl pages 11-15, save to data_phase3.json (third phase)
+  python crawler.py --page-begin 11 --amount 5 --output data_phase3.json
+  
+  # Crawl default (pages 1-2, save to data.json)
+  python crawler.py
+        """
+    )
+    
+    parser.add_argument(
+        '--page-begin',
+        type=int,
+        default=1,
+        help='Starting page number (default: 1)'
+    )
+    
+    parser.add_argument(
+        '--amount',
+        type=int,
+        default=2,
+        help='Number of pages to crawl (default: 2)'
+    )
+    
+    parser.add_argument(
+        '--output',
+        type=str,
+        default='data.json',
+        help='Output JSON file path (default: data.json)'
+    )
+    
+    args = parser.parse_args()
+    
+    # Validate arguments
+    if args.page_begin < 1:
+        print("Error: --page-begin must be >= 1")
+        return
+    
+    if args.amount < 1:
+        print("Error: --amount must be >= 1")
+        return
+    
+    # Create crawler instance with provided arguments
     crawler = BaoVanHoaCrawler(
         base_url="https://baovanhoa.vn/van-hoa",
-        max_pages=2  # Adjust this number to crawl more/less pages
+        page_start=args.page_begin,
+        max_pages=args.amount
     )
     
     # Crawl all pages
     crawler.crawl_all_pages()
     
-    # Save to data.json
-    crawler.save_to_json('data.json')
+    # Save to specified output file
+    crawler.save_to_json(args.output)
 
 
 if __name__ == '__main__':
