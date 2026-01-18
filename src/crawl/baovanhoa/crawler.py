@@ -220,7 +220,7 @@ def main():
     # Create crawler instance (crawl 3 pages by default, change max_pages as needed)
     crawler = BaoVanHoaCrawler(
         base_url="https://baovanhoa.vn/van-hoa",
-        max_pages=2  # Adjust this number to crawl more/less pages
+        max_pages=499  # Adjust this number to crawl more/less pages
     )
     
     # Crawl all pages
