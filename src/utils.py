@@ -65,18 +65,23 @@ def save_image(image_url: str, save_dir: str, image_id: str) -> Optional[str]:
         return None
 
 
-def format_datetime(time_element_text: str) -> str:
+def format_datetime(time_element_text) -> str:
     """
-    Format datetime string to standardized format (YYYY-MM-DD HH:MM:SS)
+    Format datetime string or timestamp to standardized format (YYYY-MM-DD HH:MM:SS)
     
     Args:
-        time_element_text: Raw time string from HTML
+        time_element_text: Raw time string from HTML or Unix timestamp (int)
     
     Returns:
         Formatted datetime string
     """
     try:
-        # Remove extra whitespace
+        # Handle Unix timestamp (int)
+        if isinstance(time_element_text, int):
+            dt = datetime.fromtimestamp(time_element_text)
+            return dt.strftime('%Y-%m-%d %H:%M:%S')
+        
+        # Remove extra whitespace for string
         time_str = time_element_text.strip()
         
         # Try common Vietnamese datetime formats
