@@ -89,7 +89,7 @@ class NhanDanCrawler:
       images = []
       
       if article_body:
-        # Extract images
+        # Extract images from <figure> tags
         figures = article_body.find_all('figure')
         for fig in figures:
           img_tag = fig.find('img')
@@ -111,6 +111,35 @@ class NhanDanCrawler:
                 'caption': caption,
                 'author': ''
               })
+        
+        # Extract images from <table class="picture"> structure
+        picture_tables = article_body.find_all('table', class_='picture')
+        for table in picture_tables:
+          pic_td = table.find('td', class_='pic')
+          if pic_td:
+            img_tag = pic_td.find('img')
+            if img_tag:
+              # Check data-src first (lazy-load), fallback to src
+              img_src = img_tag.get('data-src') or img_tag.get('src', '')
+              # Skip placeholder images (data:image/...)
+              if img_src and not img_src.startswith('data:'):
+                img_url = img_src if img_src.startswith('http') else f"https:{img_src}"
+                img_id = hash_id(img_url + article_url)
+                
+                # Caption from alt attribute or <td class="caption">
+                caption = img_tag.get('alt', '')
+                if not caption:
+                  caption_td = table.find('td', class_='caption')
+                  if caption_td:
+                    caption = caption_td.get_text(strip=True)
+                
+                saved_path = save_image(img_url, str(self.image_dir), img_id)
+                
+                images.append({
+                  'id_image': img_id,
+                  'caption': caption,
+                  'author': ''
+                })
         
         # Extract text from <p> tags
         paragraphs = article_body.find_all('p')
@@ -135,22 +164,6 @@ class NhanDanCrawler:
     except Exception as e:
       print(f"  Error: {article_url} - {e}")
       return None
-  
-  def crawl_articles_details(self, article_url):
-    # Get article HTML
-    response = requests.get(article_url, headers=self.headers, timeout=10)
-    response.raise_for_status()
-
-    # Save HTML for debugging
-    article_id_temp = hash_id(article_url)
-    debug_file = self.debug_dir / f"article_{article_id_temp}.html"
-    with open(debug_file, 'w', encoding='utf-8') as f:
-        f.write(response.text)
-    
-    soup = BeautifulSoup(response.content, 'html.parser')
-    
-    # Find main article tag with specific class
-    article = soup.find('article', class_='article-detail')
 
   
 def main():
@@ -162,8 +175,8 @@ def main():
   
   # Step 2: Crawl detail for each article
   articles_detail = {}
-  for idx, article in enumerate(articles[:5], 1):  # Test với 5 articles đầu
-    print(f"[{idx}/5] {article['url']}")
+  total = len(articles)
+  for idx, article in enumerate(articles, 1):
     detail = crawler.crawl_article_detail(article['url'])
     if detail:
       articles_detail.update(detail)
