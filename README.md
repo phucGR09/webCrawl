@@ -26,7 +26,7 @@ webCrawl/
 {
   "article_id_16hex": {
     "url": "...",
-    "date": "...",
+    "date": "...", // 2021-07-15T02:46:59Z
     "title": "...",
     "images": [
       {

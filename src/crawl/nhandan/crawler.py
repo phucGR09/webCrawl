@@ -51,7 +51,7 @@ class NhanDanCrawler:
         }
         all_articles.append(article)
       
-      print(f"Page {page}: {len(contents)} articles")
+      #print(f"Page {page}: {len(contents)} articles")
       
       if not data['data'].get('load_more', False):
         break
@@ -171,7 +171,6 @@ def main():
   
   # Step 1: Get article list from API
   articles = crawler.crawl_articles_from_api(max_pages=1000)
-  print(f"\nTotal: {len(articles)} articles\n")
   
   # Step 2: Crawl detail for each article
   articles_detail = {}

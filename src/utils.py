@@ -66,20 +66,11 @@ def save_image(image_url: str, save_dir: str, image_id: str) -> Optional[str]:
 
 
 def format_datetime(time_element_text) -> str:
-    """
-    Format datetime string or timestamp to standardized format (YYYY-MM-DD HH:MM:SS)
-    
-    Args:
-        time_element_text: Raw time string from HTML or Unix timestamp (int)
-    
-    Returns:
-        Formatted datetime string
-    """
     try:
         # Handle Unix timestamp (int)
         if isinstance(time_element_text, int):
             dt = datetime.fromtimestamp(time_element_text)
-            return dt.strftime('%Y-%m-%d %H:%M:%S')
+            return dt.strftime('%Y-%m-%dT%H:%M:%SZ')
         
         # Remove extra whitespace for string
         time_str = time_element_text.strip()
@@ -98,7 +89,7 @@ def format_datetime(time_element_text) -> str:
         for fmt in formats:
             try:
                 dt = datetime.strptime(time_str, fmt)
-                return dt.strftime('%Y-%m-%d %H:%M:%S')
+                return dt.strftime('%Y-%m-%dT%H:%M:%SZ')
             except ValueError:
                 continue
         
@@ -111,16 +102,6 @@ def format_datetime(time_element_text) -> str:
 
 
 def normalize_url(url: str, base_url: str = '') -> str:
-    """
-    Normalize relative URLs to absolute URLs
-    
-    Args:
-        url: URL to normalize
-        base_url: Base URL for relative paths
-    
-    Returns:
-        Absolute URL
-    """
     if url.startswith('http://') or url.startswith('https://'):
         return url
     elif url.startswith('//'):
