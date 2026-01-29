@@ -5,7 +5,7 @@ import json
 import time
 
 #config
-url = "https://nhandan.vn/bao-vat-quoc-gia-nhung-bieu-tuong-song-dong-cho-su-truong-ton-cua-dan-toc-post938314.html"
+url = "https://nhandan.vn/le-hoi-anh-sang-tai-festival-hue-2024-post808953.html"
 html_path = "nhandan.html"
 
 response = requests.get(url)
